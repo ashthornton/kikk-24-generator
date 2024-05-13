@@ -26,10 +26,10 @@ ehthumbs.db
 Thumbs.db
 
 # Fragment exports
-.jpg
-.jpeg
-.png
-.gif
-.webp
-.mp4
-.webm
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.mp4
+*.webm
