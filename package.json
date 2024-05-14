@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fragment-tools": "^0.1.16",
+    "fragment-tools": "^0.1.17",
     "p5": "^1.9.3",
     "three": "^0.164.1"
   }
