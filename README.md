@@ -45,4 +45,9 @@ Output directory:
 sketches\ash-test-01\build
 ```
 
-Leave the public path as `/`.
+Then set the public path to:
+
+```
+Base public path:
+/sketches/ash-test-01/build/
+```
