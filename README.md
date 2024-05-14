@@ -7,11 +7,26 @@ Uses [Fragment](https://github.com/raphaelameaume/fragment) - [Guide](https://gi
 Run `npm i` to install.
 
 ### To create a new sketch:
-1. `cd sketches`
-2. `npx fragment --new` then follow the prompts
+`npx fragment --new` then follow the prompts.
+
+Make sure it goes into the `/sketches` directory:
+
+```
+Specify an output directory:
+./sketches/sketch-name
+```
+
+Name it whatever you want or just `sketch.js`:
+
+```
+Specify a sketch name:
+sketch
+```
+
+Then pick your template.
 
 ### To run a sketch:
-`npx fragment sketch-name/sketch.js`
+`npx fragment sketches/sketch-name/sketch.js`
 
 ## Saved images and videos
 You can export images and videos via fragment. By default these will save to wherever the server process is running from. This needs to be explicitly set so that exports are saved in an accessible location when hosted on a server.
