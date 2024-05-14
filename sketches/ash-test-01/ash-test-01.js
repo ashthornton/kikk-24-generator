@@ -65,3 +65,9 @@ export let resize = ({ width, height }) => { }
 export let rendering = '2d'
 
 export let exportDir = './exports'
+
+export let buildConfig = {
+	gui: {
+		output: true
+	}
+}
