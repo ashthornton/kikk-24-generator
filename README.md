@@ -66,3 +66,5 @@ Then set the public path to:
 Base public path:
 /sketches/ash-test-01/build/
 ```
+
+Then add a link to it in `/index.html`.
