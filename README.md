@@ -51,20 +51,20 @@ You can explore more options [here](https://github.com/raphaelameaume/fragment/b
 Then run the build command from the root of this repo so it can find the necessary packages like three and p5.
 
 It will look like this:
-`npx fragment build sketches/ash-test-01/ash-test-01.js`
+`npx fragment build sketches/sketch-name/sketch.js`
 
 Then when it asks for the output directory it will autofill with the name of your sketch appended, just change this to `/build` so it looks like this:
 
 ```
 Output directory:
-sketches\ash-test-01\build
+sketches\sketch-name\build
 ```
 
 Then set the public path to:
 
 ```
 Base public path:
-/sketches/ash-test-01/build/
+/sketches/sketch-name/build/
 ```
 
 Then add a link to it in `/index.html`.
