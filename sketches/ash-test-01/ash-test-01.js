@@ -68,6 +68,7 @@ export let exportDir = './exports'
 
 export let buildConfig = {
 	gui: {
-		output: true
+		output: true,
+		size: 0.2
 	}
 }
