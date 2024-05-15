@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import simulationFrag from './sketch.fs'
-import { min } from 'three/examples/jsm/nodes/Nodes.js'
 
 let camera
 let sceneFBO
