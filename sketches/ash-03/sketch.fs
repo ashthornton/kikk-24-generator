@@ -1,6 +1,7 @@
 uniform float uTime;
 uniform vec2 uResolution;
 uniform vec3 uColor;
+uniform vec3 uColor2;
 uniform vec3 uBgColor;
 uniform float uRingAmount;
 uniform float uTimeOffset;
@@ -62,7 +63,7 @@ void main() {
 
     // color += noise;
 
-    color = mix(color, uColor, finalNoise);
+    color = mix(color, mix(uColor, uColor2, smoothstep(0., 0.5, segment)), finalNoise);
 
     gl_FragColor = vec4(color, 1.0);
 

@@ -3,13 +3,19 @@ import fragmentShader from './sketch.fs'
 
 export let props = {
 	color: {
-		value: '#f2c2d2',
+		value: '#feca81',
 		onChange: ({ value }) => {
 			uniforms.uColor.value.set(value)
 		}
 	},
+	color2: {
+		value: '#ff9214',
+		onChange: ({ value }) => {
+			uniforms.uColor2.value.set(value)
+		}
+	},
 	bgColor: {
-		value: '#2373df',
+		value: '#165ebb',
 		onChange: ({ value }) => {
 			uniforms.uBgColor.value.set(value)
 		}
@@ -26,7 +32,7 @@ export let props = {
 		}
 	},
 	ringAmount: {
-		value: 10,
+		value: 14,
 		params: {
 			min: 0,
 			max: 250,
@@ -37,7 +43,7 @@ export let props = {
 		}
 	},
 	timeOffset: {
-		value: 1,
+		value: 0.374,
 		params: {
 			min: 0,
 			max: 10,
@@ -48,7 +54,7 @@ export let props = {
 		}
 	},
 	speed: {
-		value: 1,
+		value: 0.345,
 		params: {
 			min: 0,
 			max: 10,
@@ -59,7 +65,7 @@ export let props = {
 		}
 	},
 	waveNoiseStrength: {
-		value: 0.,
+		value: 0.461,
 		params: {
 			min: 0,
 			max: 2,
@@ -103,7 +109,7 @@ export let props = {
 		}
 	},
 	segments: {
-		value: 3,
+		value: 2.8,
 		params: {
 			min: 0,
 			max: 20,
@@ -120,6 +126,7 @@ let uniforms = {
 	uResolution: { value: new THREE.Vector2() },
 	uTime: { value: 0 },
 	uColor: { value: new THREE.Color(props.color.value) },
+	uColor2: { value: new THREE.Color(props.color2.value) },
 	uBgColor: { value: new THREE.Color(props.bgColor.value) },
 	uOrigin: { value: new THREE.Vector2(...props.origin.value) },
 	uRingAmount: { value: props.ringAmount.value },
