@@ -15,7 +15,7 @@ export let props = {
 		}
 	},
 	bgColor: {
-		value: '#165ebb',
+		value: '#184a8b',
 		onChange: ({ value }) => {
 			uniforms.uBgColor.value.set(value)
 		}
