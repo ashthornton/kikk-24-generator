@@ -8,7 +8,7 @@ let isInited = false
 
 export let props = {
 	color1: {
-		value: "#0088cc",
+		value: "#007ecc",
 		type: "color",
 		displayName: "Bottom Base Color",
 		onChange: (prop, { width, height, pixelRatio }) => {
@@ -16,7 +16,7 @@ export let props = {
 		}
 	},
 	color2: {
-		value: "#fdd3e0",
+		value: "#fbb7cc",
 		type: "color",
 		displayName: "Top Base Color",
 		onChange: (prop, { width, height, pixelRatio }) => {
