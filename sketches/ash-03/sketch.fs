@@ -7,6 +7,7 @@ uniform float uTimeOffset;
 uniform float uSpeed;
 uniform float uWaveNoiseStrength;
 uniform float uTextureNoiseStrength;
+uniform float uStaticNoiseStrength;
 uniform float uEdgeCurve;
 uniform float uSegments;
 uniform vec2 uOrigin;
@@ -19,6 +20,24 @@ varying vec2 vUv;
 // #include "../../lygia/generative/pnoise.glsl"
 #include "../../lygia/generative/fbm.glsl"
 // #include "../../lygia/generative/worley.glsl"
+
+// float random(vec2 p) {
+// 	vec3 p3 = fract(vec3(p.xyx) * 443.8975);
+// 	p3 += dot(p3, p3.yzx + 19.19);
+// 	return fract((p3.x + p3.y) * p3.z);
+// }
+
+float blendSoftLight(float base, float blend) {
+	return (blend<0.5)?(2.0*base*blend+base*base*(1.0-2.0*blend)):(sqrt(base)*(2.0*blend-1.0)+2.0*base*(1.0-blend));
+}
+
+vec3 blendSoftLight(vec3 base, vec3 blend) {
+	return vec3(blendSoftLight(base.r,blend.r),blendSoftLight(base.g,blend.g),blendSoftLight(base.b,blend.b));
+}
+
+vec3 blendSoftLight(vec3 base, vec3 blend, float opacity) {
+	return (blendSoftLight(base, blend) * opacity + base * (1.0 - opacity));
+}
 
 void main() {
     vec2 uv = (2. * gl_FragCoord.xy - uResolution) / min(uResolution.x, uResolution.y) + uOrigin;
@@ -48,6 +67,8 @@ void main() {
     gl_FragColor = vec4(color, 1.0);
 
     // gl_FragColor = vec4(vec3(segment), 1.);
+
+    gl_FragColor.rgb = blendSoftLight(gl_FragColor.rgb, vec3(random(vUv) - 0.5), uStaticNoiseStrength);
 
     #include <colorspace_fragment>
 }

@@ -80,6 +80,17 @@ export let props = {
 			uniforms.uTextureNoiseStrength.value = value
 		}
 	},
+	staticNoiseStrength: {
+		value: 0.1,
+		params: {
+			min: 0,
+			max: 2,
+			step: 0.001
+		},
+		onChange: ({ value }) => {
+			uniforms.uStaticNoiseStrength.value = value
+		}
+	},
 	edgeCurve: {
 		value: 0.328,
 		params: {
@@ -116,6 +127,7 @@ let uniforms = {
 	uSpeed: { value: props.speed.value },
 	uWaveNoiseStrength: { value: props.waveNoiseStrength.value },
 	uTextureNoiseStrength: { value: props.textureNoiseStrength.value },
+	uStaticNoiseStrength: { value: props.staticNoiseStrength.value },
 	uEdgeCurve: { value: props.edgeCurve.value },
 	uSegments: { value: props.segments.value }
 }
