@@ -2,12 +2,14 @@ import p5 from 'p5'
 
 let gradientCanvas
 let noiseCanvas
-let numberOfParticles = 1000
 let particles = []
 let frameRate = 60
 let groupNumber = 100 // number of particles to add per frame
 let drawCount = 0
 let maxDrawCount = 15000
+let frameCount = 0
+let isInited = false
+let _hasFinished = false
 
 export let props = {
 	color1: {
@@ -294,6 +296,13 @@ function initGradient() {
 }
 
 function drawParticles(p) {
+	
+	// other anim
+	// if(_hasFinished) return
+
+	// const lerpAmout = frameCount % 100 / 100
+	// if(lerpAmout >= 0.99) _hasFinished = true
+
 	if (drawCount < maxDrawCount) {
 		// add a group of particles
 		let addbBunch = groupNumber
@@ -315,10 +324,18 @@ function drawParticles(p) {
 		const randomPixelCoord = Math.floor(p.random(0, gradientCanvas.width * gradientCanvas.height * 4))
 		p.stroke(gradientCanvas.pixels[randomPixelCoord * 4], gradientCanvas.pixels[randomPixelCoord * 4 + 1], gradientCanvas.pixels[randomPixelCoord * 4 + 2], 255)
 
+		// other anim
+		// p.fill(gradientCanvas.pixels[randomPixelCoord * 4], gradientCanvas.pixels[randomPixelCoord * 4 + 1], gradientCanvas.pixels[randomPixelCoord * 4 + 2], 255)
+
 		// get colour from gradient at this point
 		// p.stroke(gradientCanvas.get(particles[randomParticleIndex].x, particles[randomParticleIndex].y + 50 ))
 
 		p.strokeCap(p.SQUARE)
+
+		// other anim
+		// const lerpPosX = p.lerp(particles[randomParticleIndex].segments[0].x1, particles[randomParticleIndex].segments[particles[randomParticleIndex].segments.length-1].x1, lerpAmout)
+		// const lerpPosY = p.lerp(particles[randomParticleIndex].segments[0].y1, particles[randomParticleIndex].segments[particles[randomParticleIndex].segments.length-1].y1, lerpAmout)
+		// p.circle(lerpPosX, lerpPosY, 5)
 
 		for(let j = 0; j < particles[randomParticleIndex].segments.length; j++) {
 
@@ -356,11 +373,14 @@ function drawParticles(p) {
 export function draw({ p }) {
 	p.randomSeed()
 
-	p.tint(255, 255)
-	p.blendMode(p.BLEND)
+	// if(!isInited) {
+		p.tint(255, 255)
+		p.blendMode(p.BLEND)
 
-	p.background(0, 0, 0)
-	p.image(gradientCanvas, 0, 0) // add the bg gradient
+		p.background(0, 0, 0)
+		p.image(gradientCanvas, 0, 0) // add the bg gradient
+		// isInited = true
+	// }
 
 	drawParticles(p)
 
@@ -370,6 +390,14 @@ export function draw({ p }) {
 	p.tint(255, 50) // Display at half opacity
 	p.image(noiseCanvas, 0, 0) // add the noise
 
+	frameCount++
+
 }
 
 export let rendering = 'p5';
+
+export let buildConfig = {
+	gui: {
+		output: true
+	}
+}
