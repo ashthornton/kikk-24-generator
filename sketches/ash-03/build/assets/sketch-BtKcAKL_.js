@@ -1,7 +1,8 @@
-import{V as c,C as a,O as l,B as x,F as s,M as p,S as u}from"./three.module-CknGqdzL.js";const d=`#define GLSLIFY 1
+import{V as a,C as r,O as l,B as x,F as s,M as p,S as u}from"./three.module-CknGqdzL.js";const d=`#define GLSLIFY 1
 uniform float uTime;
 uniform vec2 uResolution;
 uniform vec3 uColor;
+uniform vec3 uColor2;
 uniform vec3 uBgColor;
 uniform float uRingAmount;
 uniform float uTimeOffset;
@@ -682,7 +683,7 @@ void main() {
 
     
 
-    color = mix(color, uColor, finalNoise);
+    color = mix(color, mix(uColor, uColor2, smoothstep(0., 0.5, segment)), finalNoise);
 
     gl_FragColor = vec4(color, 1.0);
 
@@ -691,11 +692,11 @@ void main() {
     gl_FragColor.rgb = blendSoftLight(gl_FragColor.rgb, vec3(random(vUv) - 0.5), uStaticNoiseStrength);
 
     #include <colorspace_fragment>
-}`;let t={color:{value:"#f2c2d2",onChange:({value:n})=>{e.uColor.value.set(n)}},bgColor:{value:"#2373df",onChange:({value:n})=>{e.uBgColor.value.set(n)}},origin:{value:[0,0],params:{min:-5,max:5,step:.01},onChange:({value:n})=>{e.uOrigin.value.set(...n)}},ringAmount:{value:10,params:{min:0,max:250,step:1},onChange:({value:n})=>{e.uRingAmount.value=n}},timeOffset:{value:1,params:{min:0,max:10,step:.001},onChange:({value:n})=>{e.uTimeOffset.value=n}},speed:{value:1,params:{min:0,max:10,step:.001},onChange:({value:n})=>{e.uSpeed.value=n}},waveNoiseStrength:{value:0,params:{min:0,max:2,step:.001},onChange:({value:n})=>{e.uWaveNoiseStrength.value=n}},textureNoiseStrength:{value:.07,params:{min:0,max:2,step:.001},onChange:({value:n})=>{e.uTextureNoiseStrength.value=n}},staticNoiseStrength:{value:.1,params:{min:0,max:2,step:.001},onChange:({value:n})=>{e.uStaticNoiseStrength.value=n}},edgeCurve:{value:.328,params:{min:-2,max:2,step:.001},onChange:({value:n})=>{e.uEdgeCurve.value=n}},segments:{value:3,params:{min:0,max:20,step:.1},onChange:({value:n})=>{e.uSegments.value=n}}},o,e={uResolution:{value:new c},uTime:{value:0},uColor:{value:new a(t.color.value)},uBgColor:{value:new a(t.bgColor.value)},uOrigin:{value:new c(...t.origin.value)},uRingAmount:{value:t.ringAmount.value},uTimeOffset:{value:t.timeOffset.value},uSpeed:{value:t.speed.value},uWaveNoiseStrength:{value:t.waveNoiseStrength.value},uTextureNoiseStrength:{value:t.textureNoiseStrength.value},uStaticNoiseStrength:{value:t.staticNoiseStrength.value},uEdgeCurve:{value:t.edgeCurve.value},uSegments:{value:t.segments.value}},y=({scene:n,width:i,height:r})=>{o=new l(1,1,1,1,1,1e3);let v=new x;v.setAttribute("position",new s([-1,3,0,-1,-1,0,3,-1,0],3)),v.setAttribute("uv",new s([0,2,0,0,2,0],2));let f=new p(v,new u({vertexShader:`
+}`;let t={color:{value:"#feca81",onChange:({value:n})=>{e.uColor.value.set(n)}},color2:{value:"#ff9214",onChange:({value:n})=>{e.uColor2.value.set(n)}},bgColor:{value:"#165ebb",onChange:({value:n})=>{e.uBgColor.value.set(n)}},origin:{value:[0,0],params:{min:-5,max:5,step:.01},onChange:({value:n})=>{e.uOrigin.value.set(...n)}},ringAmount:{value:14,params:{min:0,max:250,step:1},onChange:({value:n})=>{e.uRingAmount.value=n}},timeOffset:{value:.374,params:{min:0,max:10,step:.001},onChange:({value:n})=>{e.uTimeOffset.value=n}},speed:{value:.345,params:{min:0,max:10,step:.001},onChange:({value:n})=>{e.uSpeed.value=n}},waveNoiseStrength:{value:.461,params:{min:0,max:2,step:.001},onChange:({value:n})=>{e.uWaveNoiseStrength.value=n}},textureNoiseStrength:{value:.07,params:{min:0,max:2,step:.001},onChange:({value:n})=>{e.uTextureNoiseStrength.value=n}},staticNoiseStrength:{value:.1,params:{min:0,max:2,step:.001},onChange:({value:n})=>{e.uStaticNoiseStrength.value=n}},edgeCurve:{value:.328,params:{min:-2,max:2,step:.001},onChange:({value:n})=>{e.uEdgeCurve.value=n}},segments:{value:2.8,params:{min:0,max:20,step:.1},onChange:({value:n})=>{e.uSegments.value=n}}},o,e={uResolution:{value:new a},uTime:{value:0},uColor:{value:new r(t.color.value)},uColor2:{value:new r(t.color2.value)},uBgColor:{value:new r(t.bgColor.value)},uOrigin:{value:new a(...t.origin.value)},uRingAmount:{value:t.ringAmount.value},uTimeOffset:{value:t.timeOffset.value},uSpeed:{value:t.speed.value},uWaveNoiseStrength:{value:t.waveNoiseStrength.value},uTextureNoiseStrength:{value:t.textureNoiseStrength.value},uStaticNoiseStrength:{value:t.staticNoiseStrength.value},uEdgeCurve:{value:t.edgeCurve.value},uSegments:{value:t.segments.value}},y=({scene:n,width:i,height:c})=>{o=new l(1,1,1,1,1,1e3);let v=new x;v.setAttribute("position",new s([-1,3,0,-1,-1,0,3,-1,0],3)),v.setAttribute("uv",new s([0,2,0,0,2,0],2));let f=new p(v,new u({vertexShader:`
         varying vec2 vUv;
 
         void main() {
             vUv = uv;
             gl_Position = vec4(position, 1.);
         }
-        `,fragmentShader:d,uniforms:e}));n.add(f)},_=({renderer:n,scene:i,time:r,deltaTime:v})=>{e.uTime.value=r,n.render(i,o)},g=({width:n,height:i})=>{e.uResolution.value.x=n,e.uResolution.value.y=i,o.left=-n*.5,o.right=n*.5,o.top=i*.5,o.bottom=-i*.5,o.updateProjectionMatrix()},S="three",N="./exports",z={gui:{output:!0}};export{z as buildConfig,N as exportDir,y as init,t as props,S as rendering,g as resize,_ as update};
+        `,fragmentShader:d,uniforms:e}));n.add(f)},_=({renderer:n,scene:i,time:c,deltaTime:v})=>{e.uTime.value=c,n.render(i,o)},g=({width:n,height:i})=>{e.uResolution.value.x=n,e.uResolution.value.y=i,o.left=-n*.5,o.right=n*.5,o.top=i*.5,o.bottom=-i*.5,o.updateProjectionMatrix()},S="three",C="./exports",N={gui:{output:!0}};export{N as buildConfig,C as exportDir,y as init,t as props,S as rendering,g as resize,_ as update};
