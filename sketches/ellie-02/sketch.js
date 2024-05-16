@@ -69,10 +69,58 @@ export let props = {
 			uniforms.uColor2.value.set(value)
 		}
 	},
-	color3: {
-		value: '#d1e085',
+	squareColor1: {
+		value: '#eaf2c9',
 		onChange: ({ value }) => {
 			uniforms.uColor3.value.set(value)
+		}
+	},
+	squareColor2: {
+		value: '#0a37eb',
+		onChange: ({ value }) => {
+			uniforms.uColor4.value.set(value)
+		}
+	},
+	squareColor3: {
+		value: '#b9e8b0',
+		onChange: ({ value }) => {
+			uniforms.uColor5.value.set(value)
+		}
+	},
+	gradient1Stops: {
+		value: {
+			0: 0.0,
+			1: 1.0,
+		},
+		params: {
+			min: 0,
+			max: 1,
+			step: 0.1,
+		},
+		onChange: ({ value }) => {
+			let keys = Object.keys(value)
+			let stops = keys.map(key => value[key])
+
+			uniforms.uGradient1Stop1.value = stops[0]
+			uniforms.uGradient1Stop2.value = stops[1]
+		}
+	},
+	gradient2Stops: {
+		value: {
+			0: 0.0,
+			1: 0.3,
+		},
+		params: {
+			min: 0,
+			max: 1,
+			step: 0.1,
+		},
+		onChange: ({ value }) => {
+			let keys = Object.keys(value)
+			let stops = keys.map(key => value[key])
+
+			uniforms.uGradient2Stop1.value = stops[0]
+			uniforms.uGradient2Stop2.value = stops[1]
 		}
 	}
 }
@@ -84,12 +132,18 @@ let uniforms = {
 
 	uColor1: { value: new THREE.Color(props.color1.value) },
 	uColor2: { value: new THREE.Color(props.color2.value) },
-	uColor3: { value: new THREE.Color(props.color3.value) },
+	uColor3: { value: new THREE.Color(props.squareColor1.value) },
+	uColor4: { value: new THREE.Color(props.squareColor2.value) },
+	uColor5: { value: new THREE.Color(props.squareColor3.value) },
 	uSpeed: { value: props.speed.value },
 	uNoise1Scale: { value: props.noise1Scale.value },
 	uNoise2Scale: { value: props.noise2Scale.value },
 	uNoise2XMultiplier: { value: props.noise2XMultiplier.value },
-	uNoise2YMultiplier: { value: props.noise2YMultiplier.value }
+	uNoise2YMultiplier: { value: props.noise2YMultiplier.value },
+	uGradient1Stop1: { value: props.gradient1Stops.value[0] },
+	uGradient1Stop2: { value: props.gradient1Stops.value[1] },
+	uGradient2Stop1: { value: props.gradient2Stops.value[0] },
+	uGradient2Stop2: { value: props.gradient2Stops.value[1] }
 };
 
 /**

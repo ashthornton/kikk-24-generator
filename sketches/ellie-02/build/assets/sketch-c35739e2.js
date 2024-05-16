@@ -1,4 +1,4 @@
-import{V as p,C as c,O as f,B as x,F as a,M as s,R as d}from"./three.module-859791a4.js";const u=`precision highp float;
+import{V as p,C as r,O as s,B as f,F as c,M as u,R as x}from"./three.module-859791a4.js";const d=`precision highp float;
 #define GLSLIFY 1
 
 uniform float uTime;
@@ -7,11 +7,17 @@ uniform vec2 uResolution;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
+uniform vec3 uColor4;
+uniform vec3 uColor5;
 uniform float uSpeed;
 uniform float uNoise1Scale;
 uniform float uNoise2Scale;
 uniform float uNoise2XMultiplier;
 uniform float uNoise2YMultiplier;
+uniform float uGradient1Stop1;
+uniform float uGradient1Stop2;
+uniform float uGradient2Stop1;
+uniform float uGradient2Stop2;
 
 varying vec2 vUv;
 
@@ -661,6 +667,7 @@ void main() {
 
 	vec3 revealShape = vec3(0.0);
 	vec3 solidShape = vec3(0.0);
+	vec3 shapeGradient = vec3(0.0);
 
 	for(int i = 0; i < 7; i++) {
 		float randX = random(vec2(float(i), 0.0) + (uTime * 0.0000000001));
@@ -686,13 +693,20 @@ void main() {
 
 		vec2 rect = step(pos, uv) - step(pos + size, uv);
 		solidShape += vec3(rect.x * rect.y);
+
+		float relativeY = (uv.y - pos.y) / size.y; 
+
+		vec3 gradient1 = mix(uColor5, uColor4, smoothstep(uGradient2Stop1, uGradient2Stop2, relativeY)); 
+		vec3 gradient2 = mix(gradient1, uColor3, smoothstep(uGradient1Stop1, uGradient1Stop2, relativeY)); 
+
+		shapeGradient += gradient2 * rect.x * rect.y; 
 	}
 
 	vec3 finalColor = mix(layer1, layer2, revealShape.x);
-	finalColor = mix(finalColor, uColor3, solidShape.x);
+	finalColor = mix(finalColor, shapeGradient, solidShape.x);
 
-	gl_FragColor = vec4(finalColor, 1.0);
-}`;let t={speed:{value:2,params:{min:1,max:10,step:1},onChange:({value:n})=>{e.uSpeed.value=n}},noise1Scale:{value:.82,params:{min:0,max:10,step:.01},onChange:({value:n})=>{e.uNoise1Scale.value=n}},noise2Scale:{value:7.7,params:{min:0,max:10,step:.01},onChange:({value:n})=>{e.uNoise2Scale.value=n}},noise2XMultiplier:{value:3,params:{min:0,max:500,step:1},onChange:({value:n})=>{e.uNoise2XMultiplier.value=n}},noise2YMultiplier:{value:310,params:{min:0,max:500,step:1},onChange:({value:n})=>{e.uNoise2XMultiplier.value=n}},color1:{value:"#eebcd1",onChange:({value:n})=>{e.uColor1.value.set(n)}},color2:{value:"#4dbbff",onChange:({value:n})=>{e.uColor2.value.set(n)}},color3:{value:"#d1e085",onChange:({value:n})=>{e.uColor3.value.set(n)}}},o,e={uResolution:{value:new p},uTime:{value:0},uColor1:{value:new c(t.color1.value)},uColor2:{value:new c(t.color2.value)},uColor3:{value:new c(t.color3.value)},uSpeed:{value:t.speed.value},uNoise1Scale:{value:t.noise1Scale.value},uNoise2Scale:{value:t.noise2Scale.value},uNoise2XMultiplier:{value:t.noise2XMultiplier.value},uNoise2YMultiplier:{value:t.noise2YMultiplier.value}},y=({scene:n,width:i,height:r})=>{o=new f(1,1,1,1,1,1e3);let v=new x;v.setAttribute("position",new a([-1,3,0,-1,-1,0,3,-1,0],3)),v.setAttribute("uv",new a([0,2,0,0,2,0],2));let l=new s(v,new d({vertexShader:`
+	gl_FragColor.rgb = finalColor;
+}`;let t={speed:{value:2,params:{min:1,max:10,step:1},onChange:({value:n})=>{e.uSpeed.value=n}},noise1Scale:{value:.82,params:{min:0,max:10,step:.01},onChange:({value:n})=>{e.uNoise1Scale.value=n}},noise2Scale:{value:7.7,params:{min:0,max:10,step:.01},onChange:({value:n})=>{e.uNoise2Scale.value=n}},noise2XMultiplier:{value:3,params:{min:0,max:500,step:1},onChange:({value:n})=>{e.uNoise2XMultiplier.value=n}},noise2YMultiplier:{value:310,params:{min:0,max:500,step:1},onChange:({value:n})=>{e.uNoise2XMultiplier.value=n}},color1:{value:"#eebcd1",onChange:({value:n})=>{e.uColor1.value.set(n)}},color2:{value:"#4dbbff",onChange:({value:n})=>{e.uColor2.value.set(n)}},squareColor1:{value:"#eaf2c9",onChange:({value:n})=>{e.uColor3.value.set(n)}},squareColor2:{value:"#0a37eb",onChange:({value:n})=>{e.uColor4.value.set(n)}},squareColor3:{value:"#b9e8b0",onChange:({value:n})=>{e.uColor5.value.set(n)}},gradient1Stops:{value:{0:0,1:1},params:{min:0,max:1,step:.1},onChange:({value:n})=>{let i=Object.keys(n).map(v=>n[v]);e.uGradient1Stop1.value=i[0],e.uGradient1Stop2.value=i[1]}},gradient2Stops:{value:{0:0,1:.3},params:{min:0,max:1,step:.1},onChange:({value:n})=>{let i=Object.keys(n).map(v=>n[v]);e.uGradient2Stop1.value=i[0],e.uGradient2Stop2.value=i[1]}}},a,e={uResolution:{value:new p},uTime:{value:0},uColor1:{value:new r(t.color1.value)},uColor2:{value:new r(t.color2.value)},uColor3:{value:new r(t.squareColor1.value)},uColor4:{value:new r(t.squareColor2.value)},uColor5:{value:new r(t.squareColor3.value)},uSpeed:{value:t.speed.value},uNoise1Scale:{value:t.noise1Scale.value},uNoise2Scale:{value:t.noise2Scale.value},uNoise2XMultiplier:{value:t.noise2XMultiplier.value},uNoise2YMultiplier:{value:t.noise2YMultiplier.value},uGradient1Stop1:{value:t.gradient1Stops.value[0]},uGradient1Stop2:{value:t.gradient1Stops.value[1]},uGradient2Stop1:{value:t.gradient2Stops.value[0]},uGradient2Stop2:{value:t.gradient2Stops.value[1]}},y=({scene:n,width:o,height:i})=>{a=new s(1,1,1,1,1,1e3);let v=new f;v.setAttribute("position",new c([-1,3,0,-1,-1,0,3,-1,0],3)),v.setAttribute("uv",new c([0,2,0,0,2,0],2));let l=new u(v,new x({vertexShader:`
         attribute vec3 position;
         attribute vec2 uv;
 
@@ -702,4 +716,4 @@ void main() {
             vUv = uv;
             gl_Position = vec4(position, 1.);
         }
-        `,fragmentShader:u,uniforms:e}));n.add(l)},_=({renderer:n,scene:i,time:r,deltaTime:v})=>{e.uTime.value=r,n.render(i,o)},z=({width:n,height:i})=>{e.uResolution.value.x=n,e.uResolution.value.y=i,o.left=-n*.5,o.right=n*.5,o.top=i*.5,o.bottom=-i*.5,o.updateProjectionMatrix()},N="three",C="./exports",S={gui:{output:!0,size:.2}};export{S as buildConfig,C as exportDir,y as init,t as props,N as rendering,z as resize,_ as update};
+        `,fragmentShader:d,uniforms:e}));n.add(l)},_=({renderer:n,scene:o,time:i,deltaTime:v})=>{e.uTime.value=i,n.render(o,a)},C=({width:n,height:o})=>{e.uResolution.value.x=n,e.uResolution.value.y=o,a.left=-n*.5,a.right=n*.5,a.top=o*.5,a.bottom=-o*.5,a.updateProjectionMatrix()},S="three",z="./exports",N={gui:{output:!0,size:.2}};export{N as buildConfig,z as exportDir,y as init,t as props,S as rendering,C as resize,_ as update};
