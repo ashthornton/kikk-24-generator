@@ -37,45 +37,6 @@ export let props = {
 			gradientMaterial.uniforms.uColor3.value.setHex(prop.value.replace('#', '0x'))
 		}
 	},
-	outlineThickness: {
-		value: 0.35,
-		displayName: "Outline Thickness",
-		params: {
-			min: 0,
-			max: 1,
-			step: 0.001
-		},
-		onChange: (prop, { width, height, pixelRatio }) => {
-			uniforms.uOutlineThickness.value = prop.value
-		}
-	},
-	outlineColor: {
-		value: "#80ff00",
-		type: "color",
-		displayName: "Outline Color",
-		onChange: (prop, { width, height, pixelRatio }) => {
-			uniforms.uOutlineColor.value.setHex(prop.value.replace('#', '0x'))
-		}
-	},
-	noiseStrength: {
-		value: 0.115,
-		displayName: "Noise Strength",
-		params: {
-			min: 0,
-			max: 1,
-			step: 0.001
-		},
-		onChange: (prop, { width, height, pixelRatio }) => {
-			uniforms.uNoiseStrength.value = prop.value
-		}
-	},
-	rectangleSize: {
-		value: [0.1, 0.1],
-		displayName: "Rectangle Size",
-		onChange: (prop, { width, height, pixelRatio }) => {
-			uniforms.uRectangleSize.value.set(prop.value[0], prop.value[1])
-		}
-	},
 	step1: {
 		value: 0.0,
 		displayName: "Gradient Step 1",
@@ -112,6 +73,90 @@ export let props = {
 			gradientMaterial.uniforms.uStep3.value = prop.value
 		}
 	},
+	bigWarpScale: {
+		value: [0.8, 2.0],
+		displayName: "Big Warp Scale",
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uBigWarpScale.value.set(prop.value[0], prop.value[1])
+		}
+	},
+	detailWarpScale: {
+		value: [0.5, 8.0],
+		displayName: "Detail Warp Scale",
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uDetailWarpScale.value.set(prop.value[0], prop.value[1])
+		}
+	},
+	noWarp: {
+		value: false,
+		displayName: "No Warp",
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uNoWarp.value = prop.value
+		}
+	},
+	warpStrength: {
+		value: 0.5,
+		displayName: "Warp Strength",
+		params: {
+			min: 0,
+			max: 1,
+			step: 0.001
+		},
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uWarpStrength.value = prop.value
+		}
+	},
+	noiseStrength: {
+		value: 0.115,
+		displayName: "Noise Strength",
+		params: {
+			min: 0,
+			max: 1,
+			step: 0.001
+		},
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uNoiseStrength.value = prop.value
+		}
+	},
+	outlineThickness: {
+		value: 0.35,
+		displayName: "Outline Thickness",
+		params: {
+			min: 0,
+			max: 1,
+			step: 0.001
+		},
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uOutlineThickness.value = prop.value
+		}
+	},
+	outlineColor: {
+		value: "#ffffff", // 80ff00
+		type: "color",
+		displayName: "Outline Color",
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uOutlineColor.value.setHex(prop.value.replace('#', '0x'))
+		}
+	},
+	rectangleSize: {
+		value: [0.1, 0.1],
+		displayName: "Rectangle Size",
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uRectangleSize.value.set(prop.value[0], prop.value[1])
+		}
+	},
+	numberOfRectangles: {
+		value: 12,
+		displayName: "Number of Rectangles",
+		params: {
+			min: 0,
+			max: 100,
+			step: 1
+		},
+		onChange: (prop, { width, height, pixelRatio }) => {
+			uniforms.uNumberOfRectangles.value = prop.value
+		}
+	},
 }
 
 let camera
@@ -141,7 +186,12 @@ let uniforms = {
 	uOutlineColor: { value: new THREE.Color().setHex(props.outlineColor.value.replace('#', '0x')) },
 	uNoiseStrength: { value: props.noiseStrength.value },
 	tBackground: { value: new THREE.Texture() },
-	uRectangleSize: { value: new THREE.Vector2().set(props.rectangleSize.value[0], props.rectangleSize.value[1]) }
+	uRectangleSize: { value: new THREE.Vector2().set(props.rectangleSize.value[0], props.rectangleSize.value[1]) },
+	uWarpStrength: { value: props.warpStrength.value },
+	uBigWarpScale: { value: new THREE.Vector2().set(props.bigWarpScale.value[0], props.bigWarpScale.value[1]) },
+	uDetailWarpScale: { value: new THREE.Vector2().set(props.detailWarpScale.value[0], props.detailWarpScale.value[1]) },
+	uNumberOfRectangles: { value: props.numberOfRectangles.value },
+	uNoWarp: { value: props.noWarp.value },
 }
 
 const handleMousemove = (e) => {

@@ -1,4 +1,5 @@
 precision highp float;
+#define PI 3.14159265359
 
 uniform float uTime;
 uniform vec2 uResolution;
@@ -11,9 +12,23 @@ uniform float uOutlineThickness;
 
 uniform vec2 uRectangleSize;
 
+uniform float uWarpStrength;
+
+uniform vec2 uBigWarpScale;
+uniform vec2 uDetailWarpScale;
+
 uniform float uNoiseStrength;
 
+uniform int uNumberOfRectangles;
+
 varying vec2 vUv;
+
+uniform bool uNoWarp;
+
+// map function
+float map(float value, float min1, float max1, float min2, float max2) {
+    return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+}
 
 float blendSoftLight(float base, float blend) {
 	return (blend<0.5)?(2.0*base*blend+base*base*(1.0-2.0*blend)):(sqrt(base)*(2.0*blend-1.0)+2.0*base*(1.0-blend));
@@ -112,6 +127,12 @@ float cnoise(vec3 P){
     return 2.2 * n_xyz;
 }
 
+float sdBox( in vec2 p, in vec2 b )
+{
+    vec2 d = abs(p)-b;
+    return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
+}
+
 void main() {
 
     vec2 mousePosition = vec2(0.5);
@@ -120,8 +141,6 @@ void main() {
     centerUV *= 2.0;
 
     // make a rectangle around the mouse
-    float rectangle = 0.0;
-
     float rectangleWidth = uRectangleSize.x;
     float rectangleHeight = uRectangleSize.y;
 
@@ -129,29 +148,72 @@ void main() {
     float distanceY = abs(centerUV.y - uMouse.y);
 
     float outlineThickness = uOutlineThickness * 0.01;
-    float outline = 0.0;
-    outline = step(rectangleWidth, distanceX) * (1.0 - step(rectangleWidth + outlineThickness, distanceX)); // do masking on X
-    outline *= (1.0 - step(rectangleHeight + outlineThickness, distanceY));
-    outline += step(rectangleHeight, distanceY) * (1.0 - step(rectangleHeight + outlineThickness, distanceY)); // do masking on Y
-    outline *= (1.0 - step(rectangleWidth + outlineThickness, distanceX));
-    outline = clamp(outline, 0.0, 1.0);
 
-    float shape = (1.0 - step(rectangleWidth, distanceX)) * (1.0 - step(rectangleWidth, distanceY));
+    float sdShape = sdBox(centerUV-uMouse, vec2(rectangleWidth, rectangleHeight));
+    float shape = 1.0 - step(0.0, sdShape);
+    float outline = smoothstep(-outlineThickness, 0.0, sdShape) * (1.0 - smoothstep(0.0, outlineThickness, sdShape));
+
+
+    float rectShape = 0.0;
+    float rectOutline = 0.0;
+    // add more rectangle shapes
+    for(int i = 0; i < uNumberOfRectangles; i++) {
+        // genrate a random position
+        vec2 randomPosition = vec2(
+            random(step(0.7, sin(float(i) * PI * 2.0 + uTime * 0.002)) + float(i) + 1.0), 
+            random(step(0.7, cos(float(i + 2) * PI * 2.0 + uTime * 0.0015)) + float(i + 3) + 1.0)
+        );
+
+        randomPosition -= 0.5; // center it
+        randomPosition *= 2.0; // scale it to -1 to 1
+
+        // set that as the mouse position
+        vec2 rectCenter = randomPosition;
+
+        float rectWidth = random(float(i) + 2.0) * 0.25 * map( step(0.7, sin(uTime * 0.005 + float(i) * 0.5)), 0., 1., 0.7, 1.0);
+        float rectHeight = random(float(i * i) + 3.0) * 0.25 * map( step(0.9, cos(uTime * 0.002 + float(i) * 1.5)), 0., 1., 0.7, 1.0);;
+
+        float sdRectBox = sdBox(centerUV-rectCenter, vec2(rectWidth, rectHeight));
+
+        float hideAnimation = step(0.0, sin(uTime * 0.00025 + float(i + 10) + float(i + 5) * PI * 2.0));
+
+        rectShape += 1.0 - step(0.0, sdRectBox) * hideAnimation;
+        rectOutline += smoothstep(-outlineThickness, 0.0, sdRectBox) * (1.0 - smoothstep(0.0, outlineThickness, sdRectBox)) * hideAnimation;
+    }
 
     // warp the uvs with noise
-    vec2 warpUV = vUv;
-    float noise = cnoise(vec3(warpUV * vec2(10.0, 8.0), uTime * 0.001));
-    warpUV += noise * 0.1;
 
-    vec2 uv = mix(warpUV, vUv, shape); // warp only outside the rect
+    vec2 uv = vUv;
+
+    if(!uNoWarp) {
+        vec2 warpUV = vUv;
+
+        float bigNoise = cnoise(vec3(warpUV * uBigWarpScale, uTime * 0.0005 + 45684.));
+        warpUV += bigNoise * uWarpStrength;
+
+        // extra noise 
+        float noise = cnoise(vec3((vUv) * uDetailWarpScale, uTime * 0.0007));
+        warpUV += noise * uWarpStrength * 1.5;
+
+        uv = mix(warpUV, vUv, shape); // warp only outside the rect
+        // warp only outside the other shapes too
+        uv = mix(uv, vUv, rectShape);
+
+    }
 
     vec3 outputColor = texture2D(tBackground, uv).rgb;
 
     // flicker the outline
-    // float flicker = random(step(0.0, sin(uTime * 0.05)));
-    // outline *= mix(1.0, flicker, step(0.3, sin(uTime * 0.01) * cos(uTime * 0.01 + 45864.)));
+    float flicker = random(step(0.0, sin(uTime * 0.005)));
+
+    rectOutline *= mix(1.0, flicker, step(0.0, sin(uTime * 0.01) * cos(uTime * 0.01 + 45864.)));
+    outline *= mix(1.0, flicker, step(0.3, sin(uTime * 0.01 + 421.) * cos(uTime * 0.01 + 45864.)));
+
 
     outputColor = mix(outputColor, uOutlineColor, outline); // blend the outline on top
+
+    // blend all the shapes outlines
+    outputColor = mix(outputColor, uOutlineColor, rectOutline);
 
     gl_FragColor = vec4(vec3(outputColor), 1.0);
 
