@@ -61,7 +61,7 @@ const handleMousemove = (e) => {
 
 	pointer.glNormalized.set((pointer.x / canvasWidth) * 2 - 1, -(pointer.y / canvasHeight) * 2 + 1)
 	pointer.glScreenSpace.set(pointer.x / canvasWidth, 1 - pointer.y / canvasHeight)
-}
+} 
 
 
 /**

@@ -3,9 +3,6 @@ precision highp float;
 uniform float uTime;
 uniform vec2 uResolution;
 
-uniform vec3 uColor1;
-uniform vec3 uColor2;
-
 uniform vec2 uMouse;
 
 uniform vec3 uOutlineColor;
@@ -35,10 +32,6 @@ float random(vec2 p) {
 
 void main() {
 
-    vec3 outputColor = mix(uColor1, uColor2, vUv.y);
-    
-    vec2 mousePosition = vec2(0.5);
-
     // make a rectangle around the mouse
     float rectangle = 0.0;
     float rectangleWidth = 0.1;
@@ -58,8 +51,6 @@ void main() {
     outputColor = mix(outputColor, uOutlineColor, outline);
 
     gl_FragColor = vec4(outputColor, 1.);
-
-
     gl_FragColor.rgb = blendSoftLight(gl_FragColor.rgb, vec3(random(vUv * 5.) - 0.5), uNoiseStrength);
 
 }
