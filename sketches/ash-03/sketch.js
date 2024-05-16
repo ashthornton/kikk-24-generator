@@ -1,5 +1,13 @@
 import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { DotScreenPass } from 'three/examples/jsm/postprocessing/DotScreenPass.js'
+import { HalftonePass } from 'three/examples/jsm/postprocessing/HalftonePass.js'
+import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass.js'
+
 import fragmentShader from './sketch.fs'
+import { OutputPass } from 'three/examples/jsm/Addons.js'
 
 export let props = {
 	color: {
@@ -122,6 +130,7 @@ export let props = {
 }
 
 let camera
+let composer
 let uniforms = {
 	uResolution: { value: new THREE.Vector2() },
 	uTime: { value: 0 },
@@ -148,8 +157,35 @@ let uniforms = {
  * @param {number} params.height
  * @param {number} params.pixelRatio
  */
-export let init = ({ scene, width, height }) => {
+export let init = ({ renderer, scene, width, height }) => {
 	camera = new THREE.OrthographicCamera(1, 1, 1, 1, 1, 1000)
+
+	composer = new EffectComposer(renderer)
+
+	composer.addPass(new RenderPass(scene, camera))
+
+	const params = {
+		shape: 1,
+		radius: 10,
+		rotateR: Math.PI / 12,
+		rotateB: Math.PI / 12 * 2,
+		rotateG: Math.PI / 12 * 3,
+		scatter: 0,
+		blending: 0.5,
+		blendingMode: 1,
+		greyscale: false,
+		disable: false
+	}
+	const halftonePass = new HalftonePass(width, height, params)
+	
+	const renderPixelatedPass = new RenderPixelatedPass( 10, scene, camera );
+	// composer.addPass( renderPixelatedPass );
+	// composer.addPass(halftonePass)
+
+	// add gamma pass
+	const outputPass = new OutputPass()
+	composer.addPass(outputPass)
+
 
 	let geometry = new THREE.BufferGeometry()
 	geometry.setAttribute(
@@ -197,7 +233,7 @@ export let init = ({ scene, width, height }) => {
 export let update = ({ renderer, scene, time, deltaTime }) => {
 	uniforms.uTime.value = time
 
-	renderer.render(scene, camera)
+	composer.render()
 }
 
 /**
