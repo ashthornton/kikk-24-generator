@@ -182,7 +182,6 @@ void main() {
     }
 
     // warp the uvs with noise
-
     vec2 uv = vUv;
 
     if(!uNoWarp) {
@@ -195,7 +194,24 @@ void main() {
         float noise = cnoise(vec3((vUv) * uDetailWarpScale, uTime * 0.0007));
         warpUV += noise * uWarpStrength * 1.5;
 
-        uv = mix(warpUV, vUv, shape); // warp only outside the rect
+        // float numOfRows = 20.;
+        // uv.y = fract(uv.y * numOfRows); // repeat the texture
+
+        // float maskStep = 1.0 / numOfRows;
+
+        // // mask out the top few rows
+        // // float selectionMask = step(maskStep + maskStep * 4.0, vUv.y) - maskStep * 4.0;
+        // float selectionMask = step(maskStep * 15.0, vUv.y);
+        // selectionMask *= step(maskStep * 2.0, 1.0 - vUv.y);
+
+        // uv.y = mix(vUv.y, uv.y, selectionMask);
+
+        // // displace the uvs in the selection mask
+        // float displace = map(sin(vUv.y * numOfRows * PI + uTime * 0.004), -1., 1., -1., 1.0);
+
+        // uv.x = mix(uv.x, uv.x + displace, selectionMask);
+
+        uv = mix(warpUV, uv, shape); // warp only outside the rect
         // warp only outside the other shapes too
         uv = mix(uv, vUv, rectShape);
 
