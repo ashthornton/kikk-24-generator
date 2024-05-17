@@ -7,6 +7,8 @@ uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
 uniform float uGradientMidPoint;
+uniform vec2 uGradientRamp;
+uniform float uNoiseScale;
 
 varying vec2 vUv;
 
@@ -14,11 +16,11 @@ varying vec2 vUv;
 
 void main() {
     float time = uTime * 0.001 * uSpeed;
-    float r = pnoise(vec3(vUv * 8., time), vec3(24.)) * 0.5 + 0.5;
+    float r = pnoise(vec3(vUv * uNoiseScale, time), vec3(24.)) * 0.5 + 0.5;
 	// float g = pnoise(vec3(vUv * 10., time + 124.352), vec3(24.)) * 0.5 + 0.5;
     // float b = pnoise(vec3(vUv * 10., time + 21.97), vec3(24.)) * 0.5 + 0.5;
 
-    r = smoothstep(0.8, 0.3, r);
+    r = smoothstep(uGradientRamp.x, uGradientRamp.y, r);
 
     vec3 firstColor = uColor1;
     vec3 middleColor = uColor2;

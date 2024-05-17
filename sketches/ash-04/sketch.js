@@ -16,20 +16,31 @@ export let props = {
 			noiseUniforms.uSpeed.value = value
 		}
 	},
+	noiseScale: {
+		value: 8,
+		params: {
+			min: 0,
+			max: 50,
+			step: 0.01
+		},
+		onChange: ({ value }) => {
+			noiseUniforms.uNoiseScale.value = value
+		}
+	},
 	color1: {
-		value: '#feca81',
+		value: '#f3e6c8',
 		onChange: ({ value }) => {
 			noiseUniforms.uColor1.value.set(value)
 		}
 	},
 	color2: {
-		value: '#ff9214',
+		value: '#ff6f31',
 		onChange: ({ value }) => {
 			noiseUniforms.uColor2.value.set(value)
 		}
 	},
 	color3: {
-		value: '#184a8b',
+		value: '#091524',
 		onChange: ({ value }) => {
 			noiseUniforms.uColor3.value.set(value)
 		}
@@ -45,15 +56,70 @@ export let props = {
 			noiseUniforms.uGradientMidPoint.value = value
 		}
 	},
-	dragSpeed: {
-		value: 0.01,
+	gradientRamp: {
+		value: [0.107, 0.704],
 		params: {
 			min: 0,
-			max: 0.1,
+			max: 1,
 			step: 0.001
 		},
 		onChange: ({ value }) => {
+			noiseUniforms.uGradientRamp.value.set(...value)
+		}
+	},
+	dragSpeed: {
+		value: 0.006,
+		params: {
+			min: 0,
+			max: 0.05,
+			step: 0.0001
+		},
+		onChange: ({ value }) => {
 			mesh3.material.uniforms.uDragSpeed.value = value
+		}
+	},
+	dragSpeedRamp: {
+		value: [0.1, 1.],
+		params: {
+			min: 0,
+			max: 4,
+			step: 0.01
+		},
+		onChange: ({ value }) => {
+			mesh3.material.uniforms.uDragSpeedRamp.value.set(...value)
+		}
+	},
+	bottomNoiseStrength: {
+		value: 0.004,
+		params: {
+			min: 0,
+			max: 0.05,
+			step: 0.0001
+		},
+		onChange: ({ value }) => {
+			mesh3.material.uniforms.uBottomNoiseStrength.value = value
+		}
+	},
+	bottomNoiseScale: {
+		value: 10,
+		params: {
+			min: 0,
+			max: 50,
+			step: 0.1
+		},
+		onChange: ({ value }) => {
+			mesh3.material.uniforms.uBottomNoiseScale.value = value
+		}
+	},
+	bottomNoiseSpeed: {
+		value: 0.2,
+		params: {
+			min: 0,
+			max: 5,
+			step: 0.01
+		},
+		onChange: ({ value }) => {
+			mesh3.material.uniforms.uBottomNoiseSpeed.value = value
 		}
 	}
 }
@@ -79,6 +145,8 @@ let noiseUniforms = {
 	uColor2: { value: new THREE.Color(props.color2.value) },
 	uColor3: { value: new THREE.Color(props.color3.value) },
 	uGradientMidPoint: { value: props.gradientMidPoint.value },
+	uGradientRamp: { value: new THREE.Vector2(...props.gradientRamp.value) },
+	uNoiseScale: { value: props.noiseScale.value }
 }
 
 /**
@@ -182,6 +250,10 @@ export let init = ({ scene, width, height }) => {
 			uniforms: {
 				t2: { value: rt2.texture },
 				uDragSpeed: { value: props.dragSpeed.value },
+				uDragSpeedRamp: { value: new THREE.Vector2(...props.dragSpeedRamp.value) },
+				uBottomNoiseStrength: { value: props.bottomNoiseStrength.value },
+				uBottomNoiseScale: { value: props.bottomNoiseScale.value },
+				uBottomNoiseSpeed: { value: props.bottomNoiseSpeed.value },
 				...globalUniforms
 			},
 			transparent: true

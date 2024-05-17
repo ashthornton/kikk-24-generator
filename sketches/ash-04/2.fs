@@ -4,6 +4,10 @@ uniform float uTime;
 uniform vec2 uResolution;
 uniform sampler2D t2;
 uniform float uDragSpeed;
+uniform vec2 uDragSpeedRamp;
+uniform float uBottomNoiseStrength;
+uniform float uBottomNoiseScale;
+uniform float uBottomNoiseSpeed;
 
 varying vec2 vUv;
 
@@ -16,11 +20,11 @@ float map(float value, float min1, float max1, float min2, float max2) {
 void main() {
     float time = uTime * 0.001;
 
-    float noiseX = pnoise(vec3(vec2(vUv.x * 2., vUv.y) * 6.465, time * 0.2), vec3(24.));
+    float noiseX = pnoise(vec3(vec2(vUv.x * uBottomNoiseScale, vUv.y) * 6.465, time * uBottomNoiseSpeed), vec3(24.));
     noiseX *= smoothstep(0.9, 0., vUv.y);
-    noiseX *= 0.005;
+    noiseX *= uBottomNoiseStrength;
 
-    float speed = map(vUv.y, 1., 0., 0.1, 1.); // speed up towards the bottom
+    float speed = map(vUv.y, 1., 0., uDragSpeedRamp.x, uDragSpeedRamp.y); // speed up towards the bottom
     speed *= uDragSpeed;
     // speed = 0.002;
 
