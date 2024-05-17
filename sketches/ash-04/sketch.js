@@ -361,3 +361,11 @@ export let resize = ({ width, height }) => {
 }
 
 export let rendering = 'three'
+
+export let exportDir = './exports'
+
+export let buildConfig = {
+	gui: {
+		output: true
+	}
+}
