@@ -58,71 +58,71 @@ export let props = {
 		}
 	},
 	color1: {
-		value: '#eebcd1',
+		value: '#FFEEC2',
 		onChange: ({ value }) => {
 			uniforms.uColor1.value.set(value)
 		}
 	},
 	color2: {
-		value: '#4dbbff',
+		value: '#F954A3',
 		onChange: ({ value }) => {
 			uniforms.uColor2.value.set(value)
 		}
 	},
 	squareColor1: {
-		value: '#eaf2c9',
+		value: '#FFEEC2',
 		onChange: ({ value }) => {
 			uniforms.uColor3.value.set(value)
 		}
 	},
 	squareColor2: {
-		value: '#0a37eb',
+		value: '#F954A3',
 		onChange: ({ value }) => {
 			uniforms.uColor4.value.set(value)
 		}
 	},
 	squareColor3: {
-		value: '#b9e8b0',
+		value: '#0B2858',
 		onChange: ({ value }) => {
 			uniforms.uColor5.value.set(value)
 		}
 	},
-	gradient1Stops: {
-		value: {
-			0: 0.0,
-			1: 1.0,
-		},
-		params: {
-			min: 0,
-			max: 1,
-			step: 0.1,
-		},
-		onChange: ({ value }) => {
-			let keys = Object.keys(value)
-			let stops = keys.map(key => value[key])
+	// gradient1Stops: {
+	// 	value: {
+	// 		0: 0.0,
+	// 		1: 1.0,
+	// 	},
+	// 	params: {
+	// 		min: 0,
+	// 		max: 1,
+	// 		step: 0.1,
+	// 	},
+	// 	onChange: ({ value }) => {
+	// 		let keys = Object.keys(value)
+	// 		let stops = keys.map(key => value[key])
 
-			uniforms.uGradient1Stop1.value = stops[0]
-			uniforms.uGradient1Stop2.value = stops[1]
-		}
-	},
-	gradient2Stops: {
-		value: {
-			0: 0.0,
-			1: 0.3,
-		},
-		params: {
-			min: 0,
-			max: 1,
-			step: 0.1,
-		},
-		onChange: ({ value }) => {
-			let keys = Object.keys(value)
-			let stops = keys.map(key => value[key])
+	// 		uniforms.uGradient1Stop1.value = stops[0]
+	// 		uniforms.uGradient1Stop2.value = stops[1]
+	// 	}
+	// },
+	// gradient2Stops: {
+	// 	value: {
+	// 		0: 0.0,
+	// 		1: 0.3,
+	// 	},
+	// 	params: {
+	// 		min: 0,
+	// 		max: 1,
+	// 		step: 0.1,
+	// 	},
+	// 	onChange: ({ value }) => {
+	// 		let keys = Object.keys(value)
+	// 		let stops = keys.map(key => value[key])
 
-			uniforms.uGradient2Stop1.value = stops[0]
-			uniforms.uGradient2Stop2.value = stops[1]
-		}
-	}
+	// 		uniforms.uGradient2Stop1.value = stops[0]
+	// 		uniforms.uGradient2Stop2.value = stops[1]
+	// 	}
+	// }
 }
 
 let camera;
@@ -140,10 +140,10 @@ let uniforms = {
 	uNoise2Scale: { value: props.noise2Scale.value },
 	uNoise2XMultiplier: { value: props.noise2XMultiplier.value },
 	uNoise2YMultiplier: { value: props.noise2YMultiplier.value },
-	uGradient1Stop1: { value: props.gradient1Stops.value[0] },
-	uGradient1Stop2: { value: props.gradient1Stops.value[1] },
-	uGradient2Stop1: { value: props.gradient2Stops.value[0] },
-	uGradient2Stop2: { value: props.gradient2Stops.value[1] }
+	// uGradient1Stop1: { value: props.gradient1Stops.value[0] },
+	// uGradient1Stop2: { value: props.gradient1Stops.value[1] },
+	// uGradient2Stop1: { value: props.gradient2Stops.value[0] },
+	// uGradient2Stop2: { value: props.gradient2Stops.value[1] }
 };
 
 /**
@@ -170,11 +170,8 @@ export let init = ({ scene, width, height }) => {
 
 	let mesh = new THREE.Mesh(
 		geometry,
-		new THREE.RawShaderMaterial({
+		new THREE.ShaderMaterial({
 			vertexShader: `
-        attribute vec3 position;
-        attribute vec2 uv;
-
         varying vec2 vUv;
 
         void main() {

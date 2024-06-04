@@ -1,5 +1,3 @@
-precision highp float;
-
 uniform float uTime;
 uniform vec2 uResolution;
 
@@ -54,6 +52,10 @@ void main() {
 		revealShape += vec3(rect.x * rect.y) * 0.3;
 	}
 
+	vec3 color1 = vec3(255.0/255.0, 238.0/255.0, 194.0/255.0); // #FFEEC2
+	vec3 color2 = vec3(249.0/255.0, 84.0/255.0, 163.0/255.0);  // #F954A3
+	vec3 color3 = vec3(11.0/255.0, 40.0/255.0, 88.0/255.0);    // #0B2858
+
 	for(int i = 0; i < 5; i++) {
 		float randX = random(vec2(float(i), 1.0) + (uTime * 0.0000000001));
 		float randY = random(vec2(float(i), 0.5) + (uTime * 0.0000000001));
@@ -66,16 +68,18 @@ void main() {
 		vec2 rect = step(pos, uv) - step(pos + size, uv);
 		solidShape += vec3(rect.x * rect.y);
 
-		float relativeY = (uv.y - pos.y) / size.y; // Calculate the relative y-coordinate within the shape
+		float relativeY = 1.0 - (uv.y - pos.y) / size.y; // Calculate the relative y-coordinate within the shape
 
-		vec3 gradient1 = mix(uColor5, uColor4, smoothstep(uGradient2Stop1, uGradient2Stop2, relativeY)); // Calculate the first gradient
-		vec3 gradient2 = mix(gradient1, uColor3, smoothstep(uGradient1Stop1, uGradient1Stop2, relativeY)); // Calculate the second gradient
+		vec3 gradient = mix(uColor3, uColor4, smoothstep(0.0, 0.475, relativeY));
+		gradient = mix(gradient, uColor5, smoothstep(0.475, 1.0, relativeY));
 
-		shapeGradient += gradient2 * rect.x * rect.y; // Add the gradient to shapeGradient
+		shapeGradient += gradient * rect.x * rect.y; // Add the gradient to shapeGradient
 	}
 
 	vec3 finalColor = mix(layer1, layer2, revealShape.x);
 	finalColor = mix(finalColor, shapeGradient, solidShape.x);
 
 	gl_FragColor.rgb = finalColor;
+
+    #include <colorspace_fragment>
 }
