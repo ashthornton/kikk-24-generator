@@ -1,4 +1,4 @@
-import{V as f,C as c,O as l,B as g,F as x,M as s,R as y}from"./three.module-859791a4.js";const p=`precision highp float;
+import{V as f,C as c,O as l,B as g,F as x,M as s,S as y}from"./three.module-b0f710bc.js";const p=`precision highp float;
 #define GLSLIFY 1
 
 uniform float uTime;
@@ -916,7 +916,7 @@ void main() {
 
 	d *= y * cos(uv.x * 10.0) * 3.0;
 
-    float steps = 6.0;
+    float steps = 4.0;
     float stepHeight = 1.0 / steps;
     float distortedY = vUv.y + d * uDistortYAmount;
     float stepIndex = floor(distortedY / stepHeight);
@@ -925,40 +925,33 @@ void main() {
     vec3 color1;
     vec3 color2;
 
-    if (stepIndex == 0.0) {
+    if (stepIndex == 3.0) {
         color1 = uColor1; 
         color2 = uColor2; 
-    } else if (stepIndex == 1.0) {
+    } else if (stepIndex == 2.0) {
         color1 = uColor2; 
         color2 = uColor3; 
-    } else if (stepIndex == 2.0) {
+    } else if (stepIndex == 1.0) {
         color1 = uColor3; 
         color2 = uColor4; 
-    } else if (stepIndex == 3.0) {
+    } else if (stepIndex == 0.0) {
         color1 = uColor4; 
-        color2 = uColor5; 
-    } else if (stepIndex == 4.0) {
-        color1 = uColor5; 
-        color2 = uColor6; 
-    } else if (stepIndex == 5.0) {
-        color1 = uColor6; 
-        color2 = uColor1; 
+        color2 = uColor4; 
     } else {
-		color1 = uColor2; 
-        color2 = uColor1; 
-	}
+        color1 = uColor4; 
+        color2 = uColor4; 
+    }
 
-    vec3 color = mix(color1, color2, smoothstep(0.3, 0.5, d));
+    vec3 color = mix(color1, color2, smoothstep(0.0, 1.0, d));
 
     gl_FragColor = vec4(color, 1.0);
-}`;let t,o={color1:{value:"#eab3c8",onChange:({value:n})=>{e.uColor1.value.set(n)}},color2:{value:"#c3dbe9",onChange:({value:n})=>{e.uColor2.value.set(n)}},color3:{value:"#b5d4cf",onChange:({value:n})=>{e.uColor3.value.set(n)}},color4:{value:"#4dbbff",onChange:({value:n})=>{e.uColor4.value.set(n)}},color5:{value:"#aac1cf",onChange:({value:n})=>{e.uColor5.value.set(n)}},color6:{value:"#4dbbff",onChange:({value:n})=>{e.uColor5.value.set(n)}},waveFrequency:{value:9,params:{min:0,max:100,step:1},onChange:({value:n})=>{e.uWaveFrequency.value=n}},waveAmplitude:{value:1,params:{min:0,max:100,step:1},onChange:({value:n})=>{e.uWaveAmplitude.value=n}},noise1Freq:{value:1,params:{min:0,max:200,step:1},onChange:({value:n})=>{e.uNoiseFreq1.value=n}},noise1Amp:{value:1,params:{min:0,max:200,step:1},onChange:({value:n})=>{e.uNoiseAmp1.value=n}},noise2Freq:{value:55,params:{min:0,max:400,step:1},onChange:({value:n})=>{e.uNoiseFreq2.value=n}},noise3Freq:{value:55,params:{min:0,max:400,step:1},onChange:({value:n})=>{e.uNoiseFreq3.value=n}},noise4Freq:{value:100,params:{min:0,max:400,step:1},onChange:({value:n})=>{e.uNoiseFreq4.value=n}},distortYAmount:{value:.1,params:{min:0,max:10,step:.001},onChange:({value:n})=>{e.uDistortYAmount.value=n}}},e={uResolution:{value:new f},uTime:{value:0},uColor1:{value:new c(o.color1.value)},uColor2:{value:new c(o.color2.value)},uColor3:{value:new c(o.color3.value)},uColor4:{value:new c(o.color4.value)},uColor5:{value:new c(o.color5.value)},uColor6:{value:new c(o.color6.value)},uWaveFrequency:{value:o.waveFrequency.value},uWaveAmplitude:{value:o.waveAmplitude.value},uNoiseFreq1:{value:o.noise1Freq.value},uNoiseAmp1:{value:o.noise1Freq.value},uNoiseFreq2:{value:o.noise2Freq.value},uNoiseFreq3:{value:o.noise3Freq.value},uNoiseFreq4:{value:o.noise4Freq.value},uDistortYAmount:{value:o.distortYAmount.value}},u=({scene:n,width:v,height:r})=>{t=new l(1,1,1,1,1,1e3);let i=new g;i.setAttribute("position",new x([-1,3,0,-1,-1,0,3,-1,0],3)),i.setAttribute("uv",new x([0,2,0,0,2,0],2));let a=new s(i,new y({vertexShader:`
-        attribute vec3 position;
-        attribute vec2 uv;
 
+    #include <colorspace_fragment>
+}`;let t,o={color1:{value:"#EBADA7",onChange:({value:n})=>{e.uColor1.value.set(n)}},color2:{value:"#47CAB2",onChange:({value:n})=>{e.uColor2.value.set(n)}},color3:{value:"#0448F7",onChange:({value:n})=>{e.uColor3.value.set(n)}},color4:{value:"#0F144E",onChange:({value:n})=>{e.uColor4.value.set(n)}},color5:{value:"#aac1cf",onChange:({value:n})=>{e.uColor5.value.set(n)}},color6:{value:"#4dbbff",onChange:({value:n})=>{e.uColor5.value.set(n)}},waveFrequency:{value:9,params:{min:0,max:100,step:1},onChange:({value:n})=>{e.uWaveFrequency.value=n}},waveAmplitude:{value:1,params:{min:0,max:100,step:1},onChange:({value:n})=>{e.uWaveAmplitude.value=n}},noise1Freq:{value:1,params:{min:0,max:200,step:1},onChange:({value:n})=>{e.uNoiseFreq1.value=n}},noise1Amp:{value:1,params:{min:0,max:200,step:1},onChange:({value:n})=>{e.uNoiseAmp1.value=n}},noise2Freq:{value:55,params:{min:0,max:400,step:1},onChange:({value:n})=>{e.uNoiseFreq2.value=n}},noise3Freq:{value:55,params:{min:0,max:400,step:1},onChange:({value:n})=>{e.uNoiseFreq3.value=n}},noise4Freq:{value:100,params:{min:0,max:400,step:1},onChange:({value:n})=>{e.uNoiseFreq4.value=n}},distortYAmount:{value:.1,params:{min:0,max:10,step:.001},onChange:({value:n})=>{e.uDistortYAmount.value=n}}},e={uResolution:{value:new f},uTime:{value:0},uColor1:{value:new c(o.color1.value)},uColor2:{value:new c(o.color2.value)},uColor3:{value:new c(o.color3.value)},uColor4:{value:new c(o.color4.value)},uColor5:{value:new c(o.color5.value)},uColor6:{value:new c(o.color6.value)},uWaveFrequency:{value:o.waveFrequency.value},uWaveAmplitude:{value:o.waveAmplitude.value},uNoiseFreq1:{value:o.noise1Freq.value},uNoiseAmp1:{value:o.noise1Freq.value},uNoiseFreq2:{value:o.noise2Freq.value},uNoiseFreq3:{value:o.noise3Freq.value},uNoiseFreq4:{value:o.noise4Freq.value},uDistortYAmount:{value:o.distortYAmount.value}},u=({scene:n,width:v,height:r})=>{t=new l(1,1,1,1,1,1e3);let i=new g;i.setAttribute("position",new x([-1,3,0,-1,-1,0,3,-1,0],3)),i.setAttribute("uv",new x([0,2,0,0,2,0],2));let a=new s(i,new y({vertexShader:`
         varying vec2 vUv;
 
         void main() {
             vUv = uv;
             gl_Position = vec4(position, 1.);
         }
-        `,fragmentShader:p,uniforms:e}));n.add(a)},m=({renderer:n,scene:v,time:r,deltaTime:i})=>{e.uTime.value=r,n.render(v,t)},z=({width:n,height:v})=>{e.uResolution.value.x=n,e.uResolution.value.y=v,t.left=-n*.5,t.right=n*.5,t.top=v*.5,t.bottom=-v*.5,t.updateProjectionMatrix()},w="three",_="./exports",C={gui:{output:!0}};export{C as buildConfig,_ as exportDir,u as init,o as props,w as rendering,z as resize,m as update};
+        `,fragmentShader:p,uniforms:e}));n.add(a)},m=({renderer:n,scene:v,time:r,deltaTime:i})=>{e.uTime.value=r,n.render(v,t)},z=({width:n,height:v})=>{e.uResolution.value.x=n,e.uResolution.value.y=v,t.left=-n*.5,t.right=n*.5,t.top=v*.5,t.bottom=-v*.5,t.updateProjectionMatrix()},_="three",w="./exports",C={gui:{output:!0}};export{C as buildConfig,w as exportDir,u as init,o as props,_ as rendering,z as resize,m as update};

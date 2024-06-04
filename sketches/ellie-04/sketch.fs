@@ -45,7 +45,7 @@ void main() {
 
 	d *= y * cos(uv.x * 10.0) * 3.0;
 
-    float steps = 6.0;
+    float steps = 4.0;
     float stepHeight = 1.0 / steps;
     float distortedY = vUv.y + d * uDistortYAmount;
     float stepIndex = floor(distortedY / stepHeight);
@@ -54,30 +54,26 @@ void main() {
     vec3 color1;
     vec3 color2;
 
-    if (stepIndex == 0.0) {
+    if (stepIndex == 3.0) {
         color1 = uColor1; 
         color2 = uColor2; 
-    } else if (stepIndex == 1.0) {
+    } else if (stepIndex == 2.0) {
         color1 = uColor2; 
         color2 = uColor3; 
-    } else if (stepIndex == 2.0) {
+    } else if (stepIndex == 1.0) {
         color1 = uColor3; 
         color2 = uColor4; 
-    } else if (stepIndex == 3.0) {
+    } else if (stepIndex == 0.0) {
         color1 = uColor4; 
-        color2 = uColor5; 
-    } else if (stepIndex == 4.0) {
-        color1 = uColor5; 
-        color2 = uColor6; 
-    } else if (stepIndex == 5.0) {
-        color1 = uColor6; 
-        color2 = uColor1; 
+        color2 = uColor4; 
     } else {
-		color1 = uColor2; 
-        color2 = uColor1; 
-	}
+        color1 = uColor4; 
+        color2 = uColor4; 
+    }
 
-    vec3 color = mix(color1, color2, smoothstep(0.3, 0.5, d));
+    vec3 color = mix(color1, color2, smoothstep(0.0, 1.0, d));
 
     gl_FragColor = vec4(color, 1.0);
+
+    #include <colorspace_fragment>
 }
