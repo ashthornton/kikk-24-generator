@@ -3,19 +3,19 @@ import fragmentShader from './sketch.fs'
 
 export let props = {
 	color1: {
-		value: '#fee1fa',
+		value: '#FFEEC2',
 		onChange: ({ value }) => {
 			uniforms.uColor1.value.set(value)
 		}
 	},
 	bgColor1: {
-		value: '#4dbbff',
+		value: '#0B2858',
 		onChange: ({ value }) => {
 			uniforms.uBgColor1.value.set(value)
 		}
 	},
 	bgColor2: {
-		value: '#000000',
+		value: '#F954A3',
 		onChange: ({ value }) => {
 			uniforms.uBgColor2.value.set(value)
 		}
@@ -149,11 +149,8 @@ export let init = ({ scene, width, height }) => {
 
 	let mesh = new THREE.Mesh(
 		geometry,
-		new THREE.RawShaderMaterial({
+		new THREE.ShaderMaterial({
 			vertexShader: `
-        attribute vec3 position;
-        attribute vec2 uv;
-
         varying vec2 vUv;
 
         void main() {

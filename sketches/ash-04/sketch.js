@@ -28,19 +28,19 @@ export let props = {
 		}
 	},
 	color1: {
-		value: '#f3e6c8',
+		value: '#FFEEC2',
 		onChange: ({ value }) => {
 			noiseUniforms.uColor1.value.set(value)
 		}
 	},
 	color2: {
-		value: '#ff6f31',
+		value: '#F954A3',
 		onChange: ({ value }) => {
 			noiseUniforms.uColor2.value.set(value)
 		}
 	},
 	color3: {
-		value: '#091524',
+		value: '#0B2858',
 		onChange: ({ value }) => {
 			noiseUniforms.uColor3.value.set(value)
 		}

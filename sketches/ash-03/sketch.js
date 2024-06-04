@@ -11,19 +11,19 @@ import { OutputPass } from 'three/examples/jsm/Addons.js'
 
 export let props = {
 	color: {
-		value: '#feca81',
+		value: '#FFC165',
 		onChange: ({ value }) => {
 			uniforms.uColor.value.set(value)
 		}
 	},
 	color2: {
-		value: '#ff9214',
+		value: '#FF3A3A',
 		onChange: ({ value }) => {
 			uniforms.uColor2.value.set(value)
 		}
 	},
 	bgColor: {
-		value: '#184a8b',
+		value: '#0F144E',
 		onChange: ({ value }) => {
 			uniforms.uBgColor.value.set(value)
 		}

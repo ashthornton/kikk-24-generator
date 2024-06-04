@@ -1,5 +1,3 @@
-precision highp float;
-
 uniform float uTime;
 uniform vec2 uResolution;
 uniform vec3 uColor1;
@@ -47,4 +45,6 @@ void main() {
     finalColor.rgb = mix(finalColor.rgb, uColor1.rgb, temp);
 
     gl_FragColor = finalColor;
+
+    #include <colorspace_fragment>
 }
